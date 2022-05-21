@@ -1,17 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import HemisphereDisplay from "./hemisphereDisplay";
+console.log("mert");
+class App extends React.Component{
+    
+    state= {latitude:null, errorMessage:""} 
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+    componentDidMount(){
+        window.navigator.geolocation.getCurrentPosition(
+            (position) => this.setState({latitude:position.coords.latitude }),
+            (error) => this.setState({errorMessage:error.message})
+        );
+    }
+    render(){
+        if(this.state.errorMessage && !this.state.latitude){
+            return <div>{this.state.errorMessage}</div>
+        }
+        if(!this.state.errorMessage && this.state.latitude){
+            return <div> <HemisphereDisplay latitude={this.state.latitude} /> </div>
+        }
+        else{
+            return <div>Loading...</div>
+        }
+    }
+}
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+ReactDOM.render(
+    <App/>,
+    document.querySelector("#root")
+)
