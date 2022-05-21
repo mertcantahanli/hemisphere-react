@@ -4,7 +4,11 @@ import HemisphereDisplay from "./hemisphereDisplay";
 console.log("mert");
 class App extends React.Component{
     
-    state= {latitude:null, errorMessage:""} 
+    constructor(props){
+        super(props)
+        this.state= {latitude:null, errorMessage:""} 
+    }
+    
 
     componentDidMount(){
         window.navigator.geolocation.getCurrentPosition(
